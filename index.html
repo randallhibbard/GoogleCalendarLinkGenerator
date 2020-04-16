@@ -28,9 +28,9 @@
       </div>
       <div class="col-md-auto">
         <div class="jumbotron">
-          <h1>Welcome to the ICS File Downloader Tool!</h1>
+          <h1>Welcome to the Google Calendar Link Generator Tool!</h1>
           <hr class="my-4" />
-          <h3>Please complete the fields below to generate a file.</h3>
+          <h3>Please complete the fields below to generate a link.</h3>
         </div>
         <form>
           <div class="form-group">
@@ -129,17 +129,13 @@
             <textarea class="form-control" id="eventDescription" rows="5"></textarea>
           </div>
           <hr class="my-4" />
+          <button type="button" class="btn btn-primary" onclick="generateLink()">Generate Link</button>
         </form>
-
-        <form method="post" action="/download-ics.php">
-          <input type="hidden" name="date_start" value="2017-1-16 9:00AM">
-          <input type="hidden" name="date_end" value="2017-1-16 10:00AM">
-          <input type="hidden" name="location" value="123 Fake St, New York, NY">
-          <input type="hidden" name="description" value="This is my description">
-          <input type="hidden" name="summary" value="This is my summary">
-          <input type="hidden" name="url" value="http://example.com">
-          <input type="submit" id="generateFileButton" value="Generate File">
-        </form>
+        <div class="form-group padding-top">
+          <label for="eventLink">Google Calendar Link:</label>
+          <textarea class="form-control" id="eventLink" rows="5"></textarea>
+        </div>
+        <button type="button" class="btn btn-outline-info" id="copyText" onclick="copyText()">Copy Text</button>
       </div>
       <div class="col">
       </div>
@@ -148,71 +144,101 @@
 
       document.getElementById("eventStartDate").addEventListener("change", updateEventEndDate);
 
-      function updateEventEndDate(){
+      function updateEventEndDate() {
         document.getElementById("eventEndDate").value = document.getElementById("eventStartDate").value;
       }
 
       document.getElementById("inputStartHour").addEventListener("change", updateEventEndHour);
 
-      function updateEventEndHour(){
+      function updateEventEndHour() {
         let startHourAddOne = document.getElementById("inputStartHour").value;
         startHourAddOne = Number(startHourAddOne);
-        if(startHourAddOne < 10){
-          startHourAddOne = startHourAddOne +1;
+        if (startHourAddOne < 10) {
+          startHourAddOne = startHourAddOne + 1;
           startHourAddOne = String("0" + startHourAddOne);
           console.log(startHourAddOne);
         }
-        else if(startHourAddOne === 23){
+        else if (startHourAddOne === 23) {
           let eventStartDate = document.getElementById("eventStartDate").value;
-          let eventStartDateDay = eventStartDate.substring(8,11);
-          let eventStartDateWithoutDay = eventStartDate.slice(0,8);
+          let eventStartDateDay = eventStartDate.substring(8, 11);
+          let eventStartDateWithoutDay = eventStartDate.slice(0, 8);
           eventStartDateDay = Number(eventStartDateDay) + 1;
           eventStartDateDay = String(eventStartDateDay);
           eventStartDate = eventStartDateWithoutDay + eventStartDateDay;
           document.getElementById("eventEndDate").value = eventStartDate;
           startHourAddOne = "00";
         }
-        else{
-          startHourAddOne = startHourAddOne +1;
+        else {
+          startHourAddOne = startHourAddOne + 1;
         }
         document.getElementById("inputEndHour").value = startHourAddOne;
       }
 
       document.getElementById("inputStartMinutes").addEventListener("change", updateEventEndMinutes);
 
-      function updateEventEndMinutes(){
+      function updateEventEndMinutes() {
         document.getElementById("inputEndMinutes").value = document.getElementById("inputStartMinutes").value;
       }
 
-      document.getElementById("generateFileButton").addEventListener("mouseover", generateFile);
+      function generateLink() {
 
-      function generateFile(){
-      
-      let eventTitle = document.querySelector('#eventTitle');
-      let eventStartDate = document.querySelector('#eventStartDate');
-      let inputStartHour = document.querySelector('#inputStartHour');
-      let inputStartMinutes = document.querySelector('#inputStartMinutes');
-      let eventEndDate = document.querySelector('#eventEndDate');
-      let inputEndHour = document.querySelector('#inputEndHour');
-      let inputEndMinutes = document.querySelector('#inputEndMinutes');
+        let eventTitle = document.querySelector('#eventTitle');
+        let eventStartDate = document.querySelector('#eventStartDate');
+        let inputStartHour = document.querySelector('#inputStartHour');
+        let inputStartMinutes = document.querySelector('#inputStartMinutes');
+        let eventEndDate = document.querySelector('#eventEndDate');
+        let inputEndHour = document.querySelector('#inputEndHour');
+        let inputEndMinutes = document.querySelector('#inputEndMinutes');
 
-  
-      let eventLocation = document.querySelector('#eventLocation');
-      let eventDescription = document.querySelector('#eventDescription');
-      console.log(eventTitle.value);
-      console.log(eventStartDate.value);
-      console.log(inputStartHour.value);
-      console.log(inputStartMinutes.value);
-      console.log(eventEndDate.value);
-      console.log(inputEndHour.value);
-      console.log(inputEndMinutes.value);
-      console.log(eventLocation.value);
-      console.log(eventDescription.value);
+
+        let eventLocation = document.querySelector('#eventLocation');
+        let eventDescription = document.querySelector('#eventDescription');
+        console.log(eventTitle.value);
+        console.log(eventStartDate.value);
+        console.log(inputStartHour.value);
+        console.log(inputStartMinutes.value);
+        console.log(eventEndDate.value);
+        console.log(inputEndHour.value);
+        console.log(inputEndMinutes.value);
+        console.log(eventLocation.value);
+        console.log(eventDescription.value);
+
+        let encodedTitle =encodeURI(eventTitle.value);
+        
+        let formattedDateTimeStart = formatDateTime(eventStartDate.value, inputStartHour.value, inputStartMinutes.value);
+        let formattedDateTimeEnd = formatDateTime(eventEndDate.value, inputEndHour.value, inputEndMinutes.value);
+
+        let encodedDetails =encodeURI(eventDescription.value);
+        let encodedLocation =encodeURI(eventLocation.value);
+
+        let baseURL = "http://www.google.com/calendar/event?action=TEMPLATE&text=";
+
+        let finalURL = baseURL + encodedTitle + "&dates=" + formattedDateTimeStart + "/" + formattedDateTimeEnd + "&details=" + encodedDetails + "&location=" + encodedLocation;
+        console.log(finalURL);
+
+        document.getElementById("eventLink").value = finalURL;
+
 
       }
 
-   
+      function formatDateTime(Date, Hour, Minutes){
+          let finalDate;
+          let dateArray = Date.split("-");
+          Date = dateArray[0] + dateArray[1] + dateArray[2];
+          finalDate = Date + "T" + Hour + Minutes + "00";
+          console.log(finalDate);
 
+          return finalDate;
+      }
+
+
+      function copyText(){
+        let copyText = document.getElementById("eventLink");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+        document.getElementById("copyText").innerHTML = "Link Copied!";
+      }
 
     </script>
 
