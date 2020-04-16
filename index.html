@@ -12,9 +12,6 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="styling.css">
@@ -154,8 +151,9 @@
         if(startHourAddOne < 10){
           startHourAddOne = startHourAddOne +1;
           startHourAddOne = String("0" + startHourAddOne);
+          console.log(startHourAddOne);
         }
-        if(startHourAddOne == 23){
+        else if(startHourAddOne === 23){
           let eventStartDate = document.getElementById("eventStartDate").value;
           let eventStartDateDay = eventStartDate.substring(8,11);
           let eventStartDateWithoutDay = eventStartDate.slice(0,8);
@@ -164,12 +162,10 @@
           eventStartDate = eventStartDateWithoutDay + eventStartDateDay;
           document.getElementById("eventEndDate").value = eventStartDate;
           startHourAddOne = "00";
-          
         }
         else{
           startHourAddOne = startHourAddOne +1;
         }
-        
         document.getElementById("inputEndHour").value = startHourAddOne;
       }
 
@@ -202,7 +198,7 @@
       console.log(eventLocation.value);
       console.log(eventDescription.value);
 
-      
+
       }
 
 
