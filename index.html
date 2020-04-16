@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="styling.css">
+  <title>ICS File Downloader Tool</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">ICS File Downloader Tool</a>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+      </div>
+      <div class="col-md-auto">
+        <div class="jumbotron">
+          <h1>Welcome to the ICS File Downloader Tool!</h1>
+          <hr class="my-4" />
+          <h3>Please complete the fields below to generate a file.</h3>
+        </div>
+        <form>
+          <div class="form-group">
+            <label for="eventTitle">Event Title:</label>
+            <input type="text" class="form-control" id="eventTitle" placeholder="">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-4 padding-right">
+              <label for="eventStartDate">Start Date:</label>
+              <input type="date" class="form-control" id="eventStartDate">
+            </div>
+            <div class="form-group col-md-4 padding-right">
+              <label for="eventStartHour">Start Hour:</label>
+              <select id="inputStartHour" class="form-control">
+                <option>00</option>
+                <option>01</option>
+                <option>02</option>
+                <option>03</option>
+                <option>04</option>
+                <option>05</option>
+                <option>06</option>
+                <option>07</option>
+                <option>08</option>
+                <option>09</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+                <option>17</option>
+                <option>18</option>
+                <option>19</option>
+                <option>20</option>
+                <option>21</option>
+                <option>22</option>
+                <option>23</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="eventstartTimeMinutes">Start Minutes:</label>
+              <select id="inputStartMinutes" class="form-control">
+                <option>00</option>
+                <option>30</option>
+              </select>
+            </div>
+          </div>
+          <hr class="my-4" />
+          <div class="form-row">
+            <div class="form-group col-sm-4 padding-right">
+              <label for="eventEndDate">End Date:</label>
+              <input type="date" class="form-control" id="eventEndDate">
+            </div>
+            <div class="form-group col-md-4 padding-right">
+              <label for="eventEndHour">End Hour:</label>
+              <select id="inputEndHour" class="form-control">
+                <option>00</option>
+                <option>01</option>
+                <option>02</option>
+                <option>03</option>
+                <option>04</option>
+                <option>05</option>
+                <option>06</option>
+                <option>07</option>
+                <option>08</option>
+                <option>09</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+                <option>17</option>
+                <option>18</option>
+                <option>19</option>
+                <option>20</option>
+                <option>21</option>
+                <option>22</option>
+                <option>23</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="eventEndTimeMinutes">Start Minutes:</label>
+              <select id="inputEndMinutes" class="form-control">
+                <option>00</option>
+                <option>30</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="eventLocation">Event Location:</label>
+            <input type="text" class="form-control" id="eventLocation" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="eventDescription">Event Description:</label>
+            <textarea class="form-control" id="eventDescription" rows="5"></textarea>
+          </div>
+          <hr class="my-4" />
+          <button type="generateFile" class="btn btn-primary" onclick="generateFile()">Generate File</button>
+        </form>
+      </div>
+      <div class="col">
+      </div>
+    </div>
+    <script type="text/javascript">
+
+      document.getElementById("eventStartDate").addEventListener("change", updateEventEndDate);
+
+      function updateEventEndDate(){
+        document.getElementById("eventEndDate").value = document.getElementById("eventStartDate").value;
+      }
+
+      document.getElementById("inputStartHour").addEventListener("change", updateEventEndHour);
+
+      function updateEventEndHour(){
+        let startHourAddOne = document.getElementById("inputStartHour").value;
+        startHourAddOne = Number(startHourAddOne);
+        if(startHourAddOne < 10){
+          startHourAddOne = startHourAddOne +1;
+          startHourAddOne = String("0" + startHourAddOne);
+        }
+        if(startHourAddOne == 23){
+          let eventStartDate = document.getElementById("eventStartDate").value;
+          let eventStartDateDay = eventStartDate.substring(8,11);
+          let eventStartDateWithoutDay = eventStartDate.slice(0,8);
+          eventStartDateDay = Number(eventStartDateDay) + 1;
+          eventStartDateDay = String(eventStartDateDay);
+          eventStartDate = eventStartDateWithoutDay + eventStartDateDay;
+          document.getElementById("eventEndDate").value = eventStartDate;
+          startHourAddOne = "00";
+          
+        }
+        else{
+          startHourAddOne = startHourAddOne +1;
+        }
+        
+        document.getElementById("inputEndHour").value = startHourAddOne;
+      }
+
+      document.getElementById("inputStartMinutes").addEventListener("change", updateEventEndMinutes);
+
+      function updateEventEndMinutes(){
+        document.getElementById("inputEndMinutes").value = document.getElementById("inputStartMinutes").value;
+      }
+
+      function generateFile(){
+      
+      let eventTitle = document.querySelector('#eventTitle');
+      let eventStartDate = document.querySelector('#eventStartDate');
+      let inputStartHour = document.querySelector('#inputStartHour');
+      let inputStartMinutes = document.querySelector('#inputStartMinutes');
+      let eventEndDate = document.querySelector('#eventEndDate');
+      let inputEndHour = document.querySelector('#inputEndHour');
+      let inputEndMinutes = document.querySelector('#inputEndMinutes');
+
+  
+      let eventLocation = document.querySelector('#eventLocation');
+      let eventDescription = document.querySelector('#eventDescription');
+      console.log(eventTitle.value);
+      console.log(eventStartDate.value);
+      console.log(inputStartHour.value);
+      console.log(inputStartMinutes.value);
+      console.log(eventEndDate.value);
+      console.log(inputEndHour.value);
+      console.log(inputEndMinutes.value);
+      console.log(eventLocation.value);
+      console.log(eventDescription.value);
+
+      
+      }
+
+
+    </script>
+</body>
+
+</html>
