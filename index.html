@@ -55,6 +55,7 @@
                 <option>07</option>
                 <option>08</option>
                 <option>09</option>
+                <option>10</option>
                 <option>11</option>
                 <option>12</option>
                 <option>13</option>
@@ -97,6 +98,7 @@
                 <option>07</option>
                 <option>08</option>
                 <option>09</option>
+                <option>10</option>
                 <option>11</option>
                 <option>12</option>
                 <option>13</option>
@@ -211,7 +213,7 @@
         let encodedDetails =encodeURI(eventDescription.value);
         let encodedLocation =encodeURI(eventLocation.value);
 
-        let baseURL = "http://www.google.com/calendar/event?action=TEMPLATE&text=";
+        let baseURL = "http://calendar.google.com/calendar/r/eventedit?&text=";
 
         let finalURL = baseURL + encodedTitle + "&dates=" + formattedDateTimeStart + "/" + formattedDateTimeEnd + "&details=" + encodedDetails + "&location=" + encodedLocation;
         console.log(finalURL);
